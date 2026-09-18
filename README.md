@@ -6,7 +6,7 @@
 
 ## 界面预览
 
-![监控面板](docs/monitor-panel.jpg)
+![监控面板](docs/monitor-panel.png)
 
 ## 功能
 
@@ -43,7 +43,27 @@
 
 脚本不会自动选课，只做查询与提醒。
 
-## Server酱
+## Server酱消息推送
+
+Server酱的作用是把脚本检测到的“目标教学班出现空位 / 扩容”等事件，通过网络推送到手机端。这样即使你没有一直盯着电脑，只要监控页面仍在运行，就可以在手机上及时收到提醒。
+
+本项目中，Server酱只会在触发需要提醒的状态变化时发送消息，并不会随着每 5 秒一次的查询不断发送。
+
+### 免费额度
+
+根据 Server酱官方说明，**Server酱 Turbo 免费用户每天最多发送 5 条消息**。因此请注意：
+
+- 正常的“空位提醒”或“扩容提醒”每发送一次，会占用一条额度。
+- 点击面板中的“测试消息推送”也会实际发送一条测试消息，因此也会占用当天额度。
+- 建议只在首次配置时测试一次，避免浪费免费额度。
+- 如果一天内需要超过 5 条推送，可以查看 Server酱的付费额度方案。
+
+官方说明：
+
+- [Server酱常见问题：额度与频率限制](https://sct.ftqq.com/docs/getting-started/faq/)
+- [获取 Server酱 SendKey](https://sct.ftqq.com/docs/getting-started/sendkey/)
+
+### 配置方法
 
 点击右下角：
 
@@ -57,7 +77,7 @@
 
 确认手机端可以收到测试消息。
 
-SendKey 通过 Tampermonkey 的 `GM_setValue` 保存在本地，不会上传到本仓库。
+SendKey 通过 Tampermonkey 的 `GM_setValue` 保存在本地，不会上传到本仓库，也不应手动提交到 Git。
 
 ## Edge 后台运行建议
 
