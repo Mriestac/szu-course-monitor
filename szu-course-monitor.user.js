@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         深大指定教学班名额监控 + Server酱
 // @namespace    szu-open-course-monitor
-// @version      8.0
+// @version      8.1
 // @description  每5秒监控指定课程的指定教学班，有空位立即通过Server酱通知
+// @updateURL    https://raw.githubusercontent.com/Mriestac/szu-course-monitor/main/szu-course-monitor.user.js
+// @downloadURL  https://raw.githubusercontent.com/Mriestac/szu-course-monitor/main/szu-course-monitor.user.js
 // @match        https://ehall.szu.edu.cn/yjsxkapp/*
 // @match        https://ehall.szu.edu.cn/xsxkapp/*
 // @grant        GM_notification
@@ -309,10 +311,12 @@
                         /(\d+)\s*\/\s*(\d+)/
                     );
 
-                const current =
+                // 学校页面“容量”列的显示顺序是：容量 / 当前已选人数
+                // 例如 250/100 表示容量 250、当前已选 100、剩余 150。
+                const capacity =
                     Number(numberMatch[1]);
 
-                const capacity =
+                const current =
                     Number(numberMatch[2]);
 
                 const link =
@@ -455,7 +459,7 @@
 
             option.textContent =
                 `${item.classNo}班 ` +
-                `(${item.current}/${item.capacity})`;
+                `(已选 ${item.current} / 容量 ${item.capacity})`;
 
             classSelectEl.appendChild(
                 option
@@ -519,7 +523,7 @@
             if (item) {
                 targetEl.textContent =
                     `当前目标：${item.classNo}班 ` +
-                    `${item.current}/${item.capacity}`;
+                    `已选 ${item.current} / 容量 ${item.capacity}`;
 
                 statusEl.innerHTML =
                     '<span style="color:#66b3ff">' +
@@ -592,7 +596,7 @@
                     }
 
                     &nbsp;
-                    ${item.current}/${item.capacity}
+                    已选 ${item.current} / 容量 ${item.capacity}
                 </div>
             `;
 
@@ -907,7 +911,7 @@
             );
 
         const signature =
-            `${item.current}/${item.capacity}`;
+            `已选 ${item.current} / 容量 ${item.capacity}`;
 
         const now =
             Date.now();
@@ -952,7 +956,7 @@
             text:
                 `${item.courseName}（${item.classNo}班）\n` +
                 `${reason}\n` +
-                `${item.current}/${item.capacity}\n` +
+                `已选 ${item.current} / 容量 ${item.capacity}\n` +
                 `剩余 ${remaining} 个名额`,
 
             timeout:
@@ -1097,7 +1101,7 @@
 
         targetEl.textContent =
             `当前目标：${item.classNo}班 ` +
-            `${item.current}/${item.capacity}`;
+            `已选 ${item.current} / 容量 ${item.capacity}`;
 
         if (remaining > 0) {
             statusEl.innerHTML =
@@ -1118,7 +1122,7 @@
                  ">
                      已满
                  </span>
-                 （${item.current}/${item.capacity}）`;
+                 （已选 ${item.current} / 容量 ${item.capacity}）`;
         }
 
         if (
